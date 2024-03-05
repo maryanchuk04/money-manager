@@ -1,4 +1,11 @@
-function InputWrapper({ value = "", inputName = "", labelValue }) {
+function InputWrapper({
+	value = "",
+	inputName = "",
+	labelValue,
+	placeholder = "",
+	onChange,
+	required = false,
+}) {
 	return (
 		<div className='flex flex-col mt-4'>
 			<label
@@ -10,7 +17,11 @@ function InputWrapper({ value = "", inputName = "", labelValue }) {
 				className='border-0 outline-none border-textColor border-b-2 bg-transparent text-textColor text-xl'
 				type='text'
 				id={inputName}
+				value={value}
+				placeholder={placeholder}
+				onChange={onChange}
 				name={inputName}
+				required={required}
 			/>
 		</div>
 	);

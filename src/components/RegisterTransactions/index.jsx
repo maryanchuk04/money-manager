@@ -1,6 +1,7 @@
 import ButtonAdd from "../ButtonAdd";
 import Amount from "../Amount";
 import { formatNumber } from "../../helpers/number";
+
 function RegisterTransactions() {
 	return (
 		<div className='flex flex-col'>
