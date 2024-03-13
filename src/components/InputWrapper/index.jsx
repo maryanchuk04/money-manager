@@ -4,6 +4,7 @@ function InputWrapper({
 	labelValue,
 	placeholder = "",
 	onChange,
+	type = "text",
 	required = false,
 }) {
 	return (
@@ -14,8 +15,8 @@ function InputWrapper({
 				{labelValue}
 			</label>
 			<input
-				className='border-0 outline-none border-textColor border-b-2 bg-transparent text-textColor text-xl'
-				type='text'
+				className='border-0 outline-none border-textColor border-b-2 bg-transparent placeholder:text-textColor text-textColor text-xl'
+				type={type}
 				id={inputName}
 				value={value}
 				placeholder={placeholder}

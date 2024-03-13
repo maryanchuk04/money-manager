@@ -11,7 +11,8 @@ function App() {
 	const [tab, setTab] = useState("actions");
 	const [name, setName] = useState("");
 	const [editName, setEditName] = useState("");
-	const [isOpenDialog, setIsOpenDialog] = useState(true);
+	const [isOpenDialog, setIsOpenDialog] = useState(false);
+	const [registerTransactions, setRegisterTransactions] = useState([]);
 
 	const actionButtonClick = () => {
 		setTab("actions");
@@ -21,12 +22,28 @@ function App() {
 		setTab("register");
 	};
 
+	const deleteTransactions = (id) => {
+		setRegisterTransactions(
+			registerTransactions.filter((item) => item.id !== id)
+		);
+	};
+
 	const renderContentTabs = () => {
 		switch (tab) {
 			case "actions":
-				return <TrackerActions />;
+				return (
+					<TrackerActions
+						setRegisterTransactions={setRegisterTransactions}
+					/>
+				);
 			case "register":
-				return <RegisterTransactions />;
+				return (
+					<RegisterTransactions
+						registerTransactions={registerTransactions}
+						actionButtonClick={actionButtonClick}
+						deleteTransactions={deleteTransactions}
+					/>
+				);
 
 			default:
 				return <></>;
@@ -43,7 +60,6 @@ function App() {
 	};
 
 	const closeDialog = () => {
-		//e.preventDefault();
 		setIsOpenDialog(false);
 	};
 
@@ -58,11 +74,22 @@ function App() {
 			setIsOpenDialog(false);
 			setName(JSON.parse(localStorage.getItem("userName")));
 			setEditName(JSON.parse(localStorage.getItem("userName")));
+		} else {
+			setIsOpenDialog(true);
 		}
+		if (localStorage.getItem("data")) {
+			setRegisterTransactions(JSON.parse(localStorage.getItem("data")));
+		}
+		document.body.style.height = `${window.innerHeight}px`;
 	}, []);
 
+	useEffect(() => {
+		if (registerTransactions.length > 0)
+			localStorage.setItem("data", JSON.stringify(registerTransactions));
+	}, [registerTransactions]);
+
 	return (
-		<div className='min-h-screen max-h-fit w-full flex bg-[#1C1F24]'>
+		<div className=' md:h-dvh 3xl:min-h-dvh 3xl:max-h-fit w-full bg-[#1C1F24]'>
 			{isOpenDialog && (
 				<Dialog>
 					<form
@@ -92,8 +119,8 @@ function App() {
 					</form>
 				</Dialog>
 			)}
-			<div className='w-5/12 mx-auto flex flex-col'>
-				<div className='text-textColor text-4xl mt-5 mb-5'>
+			<div className='w-5/12 h-full md:w-11/12 mx-auto flex flex-col justify-between'>
+				<div className='text-textColor md:text-3xl text-4xl md:mt-4 md:mb-4 mt-5 mb-5'>
 					<span>Привіт, </span>
 					<span className='relative'>
 						{name}
@@ -103,7 +130,7 @@ function App() {
 					</span>
 					<span className='ml-10'>👋</span>
 				</div>
-				<Info />
+				<Info registerTransactions={registerTransactions} />
 				<div className='w-full h-30 flex mt-5'>
 					<Tab
 						onClick={actionButtonClick}
@@ -123,7 +150,6 @@ function App() {
 					</Tab>
 				</div>
 				{renderContentTabs()}
-				{/* <TrackerActions /> */}
 			</div>
 		</div>
 	);

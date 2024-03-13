@@ -7,6 +7,18 @@ export default {
 				textColor: "#F3F7F7",
 				formItemsBackground: "#29182A",
 			},
+			height: {
+				screen: "var(--webkit-fill-available)",
+			},
+		},
+		screens: {
+			"3xl": { min: "1000px" },
+
+			md: { max: "767px" },
+			// => @media (max-width: 767px) { ... }
+
+			sm: { max: "639px" },
+			// => @media (max-width: 639px) { ... }
 		},
 	},
 	plugins: [],
