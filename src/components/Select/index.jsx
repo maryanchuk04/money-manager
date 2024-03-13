@@ -1,13 +1,38 @@
+import { useState, useEffect } from "react";
 import Option from "./components/Option";
-function Select({ options = [], placeholder = "" }) {
+
+function Select({
+	options = [],
+	placeholder = "",
+	required = false,
+	selected,
+	onChange,
+}) {
+	const [value, setValue] = useState(selected);
+
+	useEffect(() => {
+		setValue(selected);
+	}, [selected]);
+
 	return (
 		<select
 			name=''
+			classNamePrefix='rounded-md'
 			id=''
-			className='h-10 rounded-xl text-textColor mt-8 text text-xl bg-formItemsBackground px-2'>
-			<option hidden>{placeholder}</option>
+			onChange={(e) => {
+				setValue(e.target.value);
+				onChange(e);
+			}}
+			className='h-10 w-full rounded-xl text-textColor mt-6 text text-xl bg-formItemsBackground px-2'
+			required={required}
+			value={value}>
+			<option className='none' hidden value=''>
+				{placeholder}
+			</option>
 			{options?.map((option, index) => (
-				<Option key={index}>{option}</Option>
+				<Option key={index} value={option}>
+					{option}
+				</Option>
 			))}
 		</select>
 	);

@@ -1,7 +1,7 @@
 function Label({ children, className }) {
 	return (
 		<span
-			className={`uppercase text-md font-light text-textColor ${className}`}>
+			className={`uppercase text-md md:text-xs font-light text-textColor ${className}`}>
 			{children}
 		</span>
 	);
