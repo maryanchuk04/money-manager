@@ -3,7 +3,7 @@ function Button({ children, type = "button", className = "", onClick }) {
 		<button
 			type={type}
 			onClick={onClick}
-			className={`bg-formItemsBackground rounded-xl border-0 outline-none text-textColor px-3 py-1 h-10 text-xl cursor-pointer hover:bg-[#150C16] ${className}`}>
+			className={`bg-formItemsBackground rounded-xl xs:text-sm border-0 outline-none text-textColor px-3 py-1 h-10 text-xl cursor-pointer hover:bg-[#150C16] ${className}`}>
 			{children}
 		</button>
 	);

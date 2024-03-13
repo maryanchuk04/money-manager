@@ -23,7 +23,7 @@ function Select({
 				setValue(e.target.value);
 				onChange(e);
 			}}
-			className='h-10 w-full rounded-xl text-textColor mt-6 text text-xl bg-formItemsBackground px-2'
+			className='h-10 xs:text-sm xs:h-8 w-full rounded-xl text-textColor mt-6 text text-xl bg-formItemsBackground px-2'
 			required={required}
 			value={value}>
 			<option className='none' hidden value=''>

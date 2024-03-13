@@ -89,7 +89,7 @@ function App() {
 	}, [registerTransactions]);
 
 	return (
-		<div className=' md:h-dvh 3xl:min-h-dvh 3xl:max-h-fit w-full bg-[#1C1F24]'>
+		<div className='md:min-h-dvh 3xl:min-h-dvh md:max-h-fit 3xl:max-h-fit w-full bg-[#1C1F24]'>
 			{isOpenDialog && (
 				<Dialog>
 					<form
@@ -120,13 +120,14 @@ function App() {
 				</Dialog>
 			)}
 			<div className='w-5/12 h-full md:w-11/12 mx-auto flex flex-col justify-between'>
-				<div className='text-textColor md:text-3xl text-4xl md:mt-4 md:mb-4 mt-5 mb-5'>
+				<div className='text-textColor md:text-3xl xs:text-xl text-4xl md:mt-4 md:mb-4 mt-5 mb-5'>
 					<span>Привіт, </span>
 					<span className='relative'>
 						{name}
+						{` `}
 						<i
 							onClick={editButtonClick}
-							className='fa-regular fa-pen-to-square absolute -top-1 -right-5 text-xl text-[#AAADAD] cursor-pointer'></i>
+							className='fa-regular fa-pen-to-square absolute -top-1 md:static xs:text-base xs:ml-2 -right-5 text-xl text-[#AAADAD] cursor-pointer'></i>
 					</span>
 					<span className='ml-10'>👋</span>
 				</div>

@@ -37,12 +37,14 @@ function Info({ registerTransactions }) {
 	const expenses = calculateExpenses();
 
 	return (
-		<div className='w-full h-60 md:h-44 bg-[#704E71] rounded-xl flex'>
+		<div className='w-full h-60 xs:h-36 md:h-44 bg-[#704E71] rounded-xl flex'>
 			<div className='h-4/6 w-10/12 m-auto flex flex-col'>
-				<div className='h-3/6 w-full flex justify-between'>
-					<div className='flex flex-col'>
-						<Label className='!text-xl md:!text-base'>Баланс</Label>
-						<Amount className='!text-4xl md:!text-2xl'>
+				<div className='h-3/6 w-full flex justify-between xs:mb-3'>
+					<div className='flex flex-col '>
+						<Label className='!text-xl xs:!text-base md:!text-base'>
+							Баланс
+						</Label>
+						<Amount className='!text-4xl xs:!text-xl md:!text-2xl'>
 							{formatNumber(balance)}
 						</Amount>
 					</div>
