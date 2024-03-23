@@ -5,6 +5,10 @@ import {
   Post,
   UseGuards,
   Request,
+  Res,
+  HttpCode,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
@@ -15,23 +19,45 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   //signup
   @Post('/signup')
+  @HttpCode(HttpStatus.CREATED)
   async addUser(
     @Body('password') userPassword: string,
-    @Body('username') userName: string,
+    @Body('email') userEmail: string,
+    @Body('name') userName: string,
   ) {
-    const saltOrRounds = 10;
-    const hashedPassword = await bcrypt.hash(userPassword, saltOrRounds);
-    const result = await this.usersService.insertUser(userName, hashedPassword);
-    return {
-      msg: 'User successfully registered',
-      userId: result.id,
-      userName: result.username,
-    };
+    try {
+      const saltOrRounds = 10;
+      const hashedPassword = await bcrypt.hash(userPassword, saltOrRounds);
+      const result = await this.usersService.insertUser(
+        userEmail,
+        hashedPassword,
+        userName,
+      );
+      return {
+        msg: 'User successfully registered',
+        userId: result.id,
+        email: result.email,
+        name: result.name,
+      };
+    } catch (error) {
+      if (error.status === 409) {
+        throw new HttpException(
+          'Користувач з таким email вже існує',
+          HttpStatus.CONFLICT,
+        );
+      } else {
+        throw new HttpException(
+          'Internal Server Error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    }
   }
-  //Post / Login
+
+  //Post / email
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  login(@Request() req): any {
+  email(@Request() req): any {
     return { User: req.user, msg: 'User logged in' };
   }
   //Get / protected
