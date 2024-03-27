@@ -1,5 +1,5 @@
 function InputWrapper({
-	value = "",
+	id = "",
 	inputName = "",
 	labelValue,
 	placeholder = "",
@@ -8,7 +8,7 @@ function InputWrapper({
 	required = false,
 }) {
 	return (
-		<div className='flex flex-col mt-4'>
+		<div className='flex flex-col'>
 			<label
 				className='text-[#A48BA6] mb-2 font-light text-sm'
 				htmlFor={inputName}>
@@ -18,7 +18,6 @@ function InputWrapper({
 				className='border-0 outline-none border-textColor border-b-2 xs:text-sm bg-transparent placeholder:text-textColor text-textColor text-xl'
 				type={type}
 				id={inputName}
-				value={value}
 				placeholder={placeholder}
 				onChange={onChange}
 				name={inputName}

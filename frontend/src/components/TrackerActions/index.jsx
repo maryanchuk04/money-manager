@@ -131,29 +131,35 @@ function TrackerActions({ setRegisterTransactions }) {
 		<div className='w-full flex flex-col mt-5 cursor-pointer'>
 			<form
 				onSubmit={addOperationsToRegister}
-				className='w-11/12 mx-auto bg-[#472D48] rounded-t-xl h-full flex mt-2'>
+				className='w-11/12 mx-auto bg-backgroundForm rounded-t-xl h-full flex mt-2'>
 				<div className='w-10/12 mx-auto flex flex-col'>
-					<InputWrapper
-						labelValue='Опис'
-						inputName='description'
-						value={operation.description}
-						onChange={setDescription}
-					/>
-					<InputWrapper
-						labelValue='Кількість'
-						inputName='amount'
-						value={operation.amount}
-						onChange={setAmount}
-						required
-					/>
-					<InputWrapper
-						labelValue='Дата'
-						inputName='date'
-						value={operation.date}
-						onChange={setDate}
-						type='date'
-						required
-					/>
+					<div className='mt-4'>
+						<InputWrapper
+							labelValue='Опис'
+							inputName='description'
+							value={operation.description}
+							onChange={setDescription}
+						/>
+					</div>
+					<div className='mt-4'>
+						<InputWrapper
+							labelValue='Кількість'
+							inputName='amount'
+							value={operation.amount}
+							onChange={setAmount}
+							required
+						/>
+					</div>
+					<div className='mt-4'>
+						<InputWrapper
+							labelValue='Дата'
+							inputName='date'
+							value={operation.date}
+							onChange={setDate}
+							type='date'
+							required
+						/>
+					</div>
 					<Select
 						options={["Надходження", "Витрата"]}
 						placeholder='Виберіть тип'

@@ -6,7 +6,7 @@ export enum TransactionType {
 }
 
 export interface Transaction {
-  id: string;
+  _id?: string;
   date: Date;
   amount: number;
   type: TransactionType;
@@ -14,7 +14,7 @@ export interface Transaction {
 }
 
 export interface Tag {
-  id: string;
+  _id?: string;
   tagName: string;
   type: TransactionType;
 }
@@ -36,7 +36,10 @@ export const UserSchema = new mongoose.Schema(
     },
     transactions: [
       {
-        id: { type: String, required: true },
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          default: mongoose.Types.ObjectId,
+        },
         date: { type: Date, required: true },
         amount: { type: Number, required: true },
         type: {
@@ -49,7 +52,10 @@ export const UserSchema = new mongoose.Schema(
     ],
     tags: [
       {
-        id: { type: String, required: true },
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          default: mongoose.Types.ObjectId,
+        },
         tagName: { type: String, required: true },
         type: {
           type: String,

@@ -9,11 +9,13 @@ import {
   HttpCode,
   HttpStatus,
   HttpException,
+  Param,
+  Put,
+  Delete,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
-import { LocalAuthGuard } from 'src/auth/local.auth.guard';
 import { UsersService } from './users.service';
+import { TransactionType } from './users.model';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -54,17 +56,103 @@ export class UsersController {
     }
   }
 
-  //Post / email
-  @UseGuards(LocalAuthGuard)
-  @Post('/login')
-  email(@Request() req): any {
-    return { User: req.user, msg: 'User logged in' };
+  @Get('/:id')
+  @HttpCode(HttpStatus.OK)
+  async getUserById(@Param('id') userId: string) {
+    try {
+      const user = await this.usersService.getUserById(userId);
+      return user;
+    } catch (error) {
+      throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
+    }
   }
-  //Get / protected
-  @UseGuards(AuthenticatedGuard)
-  @Get('/protected')
-  getHello(@Request() req): string {
-    return req.user;
+
+  @Put('/update-user-name')
+  @HttpCode(HttpStatus.OK)
+  async updateUserName(
+    @Body('id') userId: string,
+    @Body('name') userName: string,
+  ) {
+    try {
+      const updateUser = await this.usersService.updateUserName(
+        userId,
+        userName,
+      );
+      return updateUser;
+    } catch (error) {
+      throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('/transaction')
+  @HttpCode(HttpStatus.OK)
+  async addTransaction(
+    @Body('userId') userId: string,
+    @Body('amount') amount: number,
+    @Body('date') date: Date,
+    @Body('type') type: TransactionType,
+    @Body('tag') tag: string,
+  ) {
+    try {
+      const message = await this.usersService.addTransaction(userId, {
+        amount: +amount,
+        date: date,
+        type: type,
+        tag: tag,
+      });
+      return message;
+    } catch (error) {
+      throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Delete('/:userId/transaction/:transcationId')
+  @HttpCode(HttpStatus.OK)
+  async deleteTransaction(
+    @Param('userId') userId: string,
+    @Param('transactionId') transactionId: string,
+  ) {
+    try {
+      const message = await this.usersService.deleteTransaction(
+        userId,
+        transactionId,
+      );
+      return message;
+    } catch (error) {
+      throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
+    }
+  }
+  ////////////////////////////////////////////////////////////
+  @Post('/tag')
+  @HttpCode(HttpStatus.OK)
+  async addTag(
+    @Body('userId') userId: string,
+    @Body('tagName') tagName: string,
+    @Body('type') type: TransactionType,
+  ) {
+    try {
+      const message = await this.usersService.addTag(userId, {
+        tagName: tagName,
+        type: type,
+      });
+      return message;
+    } catch (error) {
+      throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Delete('/:userId/tag/:tagId')
+  @HttpCode(HttpStatus.OK)
+  async deleteTag(
+    @Param('userId') userId: string,
+    @Param('tagId') tagId: string,
+  ) {
+    try {
+      const message = await this.usersService.deleteTransaction(userId, tagId);
+      return message;
+    } catch (error) {
+      throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
+    }
   }
   //Get / logout
   @Get('/logout')

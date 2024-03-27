@@ -11,6 +11,7 @@ async function bootstrap() {
       saveUninitialized: false,
     }),
   );
+  app.enableCors();
   app.use(passport.initialize());
   app.use(passport.session());
 

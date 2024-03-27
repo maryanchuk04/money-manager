@@ -6,6 +6,7 @@ import Tab from "../../components/Tab";
 import Dialog from "../../components/Dialog";
 import InputWrapper from "../../components/InputWrapper";
 import Button from "../../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function MainPage() {
 	const [tab, setTab] = useState("actions");
@@ -13,7 +14,7 @@ function MainPage() {
 	const [editName, setEditName] = useState("");
 	const [isOpenDialog, setIsOpenDialog] = useState(false);
 	const [registerTransactions, setRegisterTransactions] = useState([]);
-
+	const navigate = useNavigate();
 	const actionButtonClick = () => {
 		setTab("actions");
 	};
@@ -27,6 +28,12 @@ function MainPage() {
 			registerTransactions.filter((item) => item.id !== id)
 		);
 	};
+
+	useEffect(() => {
+		if (!localStorage.getItem("userId")) {
+			navigate("/sign-up");
+		}
+	}, []);
 
 	const renderContentTabs = () => {
 		switch (tab) {
@@ -88,8 +95,13 @@ function MainPage() {
 			localStorage.setItem("data", JSON.stringify(registerTransactions));
 	}, [registerTransactions]);
 
+	const logOut = () => {
+		localStorage.removeItem("userId");
+		navigate("/sign-in");
+	};
+
 	return (
-		<div className='md:min-h-dvh 3xl:min-h-dvh md:max-h-fit 3xl:max-h-fit w-full bg-[#1C1F24]'>
+		<div className='md:min-h-dvh 3xl:min-h-dvh md:max-h-fit 3xl:max-h-fit w-full bg-background'>
 			{isOpenDialog && (
 				<Dialog>
 					<form
@@ -120,16 +132,23 @@ function MainPage() {
 				</Dialog>
 			)}
 			<div className='w-5/12 h-full md:w-11/12 mx-auto flex flex-col justify-between'>
-				<div className='text-textColor md:text-3xl xs:text-xl text-4xl md:mt-4 md:mb-4 mt-5 mb-5'>
-					<span>Привіт, </span>
-					<span className='relative'>
-						{name}
-						{` `}
-						<i
-							onClick={editButtonClick}
-							className='fa-regular fa-pen-to-square absolute -top-1 md:static xs:text-base xs:ml-2 -right-5 text-xl text-[#AAADAD] cursor-pointer'></i>
-					</span>
-					<span className='ml-10'>👋</span>
+				<div className='text-textColor md:text-3xl flex justify-between xs:text-xl text-4xl md:mt-4 md:mb-4 mt-5 mb-5'>
+					<div className=''>
+						<span>Привіт, </span>
+						<span className='relative'>
+							{name}
+							{` `}
+							<i
+								onClick={editButtonClick}
+								className='fa-regular fa-pen-to-square absolute -top-1 md:static xs:text-base xs:ml-2 -right-5 text-xl text-[#AAADAD] cursor-pointer'></i>
+						</span>
+						<span className='ml-10'>👋</span>
+					</div>
+					<button
+						onClick={logOut}
+						className='border-none outline-none'>
+						<i className='fa-solid fa-right-from-bracket'></i>
+					</button>
 				</div>
 				<Info registerTransactions={registerTransactions} />
 				<div className='w-full h-30 flex mt-5'>

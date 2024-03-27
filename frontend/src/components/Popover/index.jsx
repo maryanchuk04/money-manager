@@ -9,7 +9,6 @@ function Popover({ children, handleClose }) {
 			!componentRef.current.contains(event.target)
 		) {
 			handleClose();
-			console.log("work");
 		}
 	};
 

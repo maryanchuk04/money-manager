@@ -6,6 +6,8 @@ export default {
 			colors: {
 				textColor: "#F3F7F7",
 				formItemsBackground: "#29182A",
+				background: "#1C1F24",
+				backgroundForm: "#472D48",
 			},
 			height: {
 				screen: "var(--webkit-fill-available)",

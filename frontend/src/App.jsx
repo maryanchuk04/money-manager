@@ -1,11 +1,13 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { routes } from "./pages";
 const router = createBrowserRouter(routes);
+import { ToastContainer } from "react-toastify";
 
 function App() {
 	return (
-		<div className='h-fit w-full'>
-			<RouterProvider router={router} />;
+		<div className='w-full'>
+			<RouterProvider router={router} />
+			<ToastContainer />
 		</div>
 	);
 }
