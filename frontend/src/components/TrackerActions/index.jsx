@@ -15,31 +15,15 @@ function TrackerActions({ setTransactions, userId }) {
 		date: "",
 	};
 
-	const [tags, setTags] = useState([]);
 	const [maxDate, setMaxDate] = useState("");
-
-	const addOperationsToRegister = (e) => {
-		e.preventDefault();
-		setRegisterTransactions((prev) => [
-			...prev,
-			{ ...operation, id: uuid() },
-		]);
-		clearStateOperation();
-	};
 
 	const cancelClick = () => {
 		clearStateOperation();
 	};
 
 	useEffect(() => {
-		if (localStorage.getItem("tags"))
-			setTags(JSON.parse(localStorage.getItem("tags")));
-		if (localStorage.getItem("tags")) updateMaxDate();
+		updateMaxDate();
 	}, []);
-
-	useEffect(() => {
-		if (tags.length > 0) localStorage.setItem("tags", JSON.stringify(tags));
-	}, [tags]);
 
 	function updateMaxDate() {
 		const today = new Date().toISOString().split("T")[0];
@@ -64,9 +48,7 @@ function TrackerActions({ setTransactions, userId }) {
 				validationSchema={transactionValidationSchema}
 				onSubmit={createTransactions}>
 				{({ values }) => (
-					<Form
-						//onSubmit={addOperationsToRegister}
-						className='w-11/12 mx-auto bg-backgroundForm rounded-t-xl h-full flex mt-2'>
+					<Form className='w-11/12 mx-auto bg-backgroundForm rounded-t-xl h-full flex mt-2'>
 						<div className='w-10/12 mx-auto flex flex-col'>
 							<div className='mt-4'>
 								<Field
