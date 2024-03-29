@@ -7,7 +7,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     // add multiple origins here
-    origin: ['http://localhost:5173', 'http://192.168.0.105:5173'],
+    origin: true,
+    // origin: [
+    //   'http://localhost:5173',
+    //   'http://192.168.0.105:5173',
+    //   'https://money-manager-ivory.vercel.app',
+    // ],
   });
   app.use(
     session({
