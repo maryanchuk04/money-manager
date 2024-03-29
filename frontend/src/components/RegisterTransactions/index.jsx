@@ -1,44 +1,58 @@
 import React, { useState, useEffect } from "react";
 import ButtonAdd from "../ButtonAdd";
-import GroupTransaction from "./components/GroupTransaction";
+import Transaction from "./components/Transaction";
+import { formatUkrainianDateTime } from "../../helpers/date";
 
 function RegisterTransactions({
-	registerTransactions,
+	transactions,
 	actionButtonClick,
 	deleteTransactions,
 }) {
-	const [groupedTransactions, setGroupedTransactions] = useState([]);
+	const [transactionsByDay, setTransactionsByDay] = useState({});
 
 	useEffect(() => {
-		const grouped = registerTransactions.reduce((result, transaction) => {
-			const { tag, type, ...rest } = transaction;
+		const sortedTransactions = [...transactions].sort(
+			(a, b) => new Date(b.date) - new Date(a.date)
+		);
 
-			const existingGroup = result.find(
-				(group) => group.tag === tag && group.type === type
-			);
+		const groupedTransactions = {};
 
-			if (existingGroup) {
-				existingGroup.items.push(rest);
-			} else {
-				result.push({ tag, type, items: [rest] });
+		sortedTransactions.forEach((transaction) => {
+			const date = new Date(transaction.date);
+			const day = date.getDate();
+			const month = date.toLocaleString("default", { month: "long" });
+			const year = date.getFullYear();
+			const formattedDate = `${day} ${month} ${year}`;
+
+			if (!groupedTransactions[formattedDate]) {
+				groupedTransactions[formattedDate] = [];
 			}
 
-			return result;
-		}, []);
+			groupedTransactions[formattedDate].push(transaction);
+		});
 
-		setGroupedTransactions(grouped);
-	}, [registerTransactions]);
+		setTransactionsByDay(groupedTransactions);
+	}, [transactions]);
 
 	return (
 		<div className='flex flex-col'>
 			<div className='h-80 w-full overflow-y-auto text-textColor flex'>
 				<div className='h-fit flex-col mx-auto w-11/12 mt-3 flex pt-5'>
-					{groupedTransactions.map((group, groupIndex) => (
-						<GroupTransaction
-							group={group}
-							key={groupIndex}
-							deleteTransactions={deleteTransactions}
-						/>
+					{Object.keys(transactionsByDay).map((date) => (
+						<div key={date} className=''>
+							<div className='w-full'>
+								<p className='text-lg text-center italic'>
+									{date}
+								</p>
+							</div>
+							{transactionsByDay[date].map((transaction) => (
+								<Transaction
+									transaction={transaction}
+									key={transaction.id}
+									deleteTransactions={deleteTransactions}
+								/>
+							))}
+						</div>
 					))}
 				</div>
 			</div>

@@ -2,11 +2,10 @@ import Label from "../Label";
 import Amount from "../Amount";
 import { formatNumber } from "../../helpers/number";
 import { TransactionType } from "../../utils/enumTransactions";
-import { currentMonth, currentYear } from "../../utils/monthYear";
 
-function Info({ registerTransactions }) {
+function Info({ transactions }) {
 	const calculateBalance = () => {
-		return registerTransactions.reduce((total, transaction) => {
+		return transactions.reduce((total, transaction) => {
 			const amount = parseFloat(transaction.amount) || 0;
 			return transaction.type === TransactionType.EXPENCE
 				? total - amount
@@ -15,7 +14,7 @@ function Info({ registerTransactions }) {
 	};
 
 	const calculateIncome = () => {
-		return registerTransactions.reduce((total, transaction) => {
+		return transactions.reduce((total, transaction) => {
 			const amount = parseFloat(transaction.amount) || 0;
 			return transaction.type === TransactionType.INCOME
 				? total + amount
@@ -24,7 +23,7 @@ function Info({ registerTransactions }) {
 	};
 
 	const calculateExpenses = () => {
-		return registerTransactions.reduce((total, transaction) => {
+		return transactions.reduce((total, transaction) => {
 			const amount = parseFloat(transaction.amount) || 0;
 			return transaction.type === TransactionType.EXPENCE
 				? total + amount

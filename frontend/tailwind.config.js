@@ -6,6 +6,8 @@ export default {
 			colors: {
 				textColor: "#F3F7F7",
 				formItemsBackground: "#29182A",
+				background: "#1C1F24",
+				backgroundForm: "#472D48",
 			},
 			height: {
 				screen: "var(--webkit-fill-available)",
@@ -14,7 +16,7 @@ export default {
 		screens: {
 			"3xl": { min: "1000px" },
 
-			md: { max: "767px" },
+			md: { max: "769px" },
 			// => @media (max-width: 767px) { ... }
 
 			sm: { max: "639px" },

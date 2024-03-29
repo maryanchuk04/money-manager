@@ -5,16 +5,19 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(private readonly usersService: UsersService) {}
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.usersService.getUser(username);
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.usersService.getUser(email);
+
     const passwordValid = await bcrypt.compare(password, user.password);
+
     if (!user) {
       throw new NotAcceptableException('could not find the user');
     }
     if (user && passwordValid) {
       return {
-        userId: user.id,
-        userName: user.username,
+        id: user.id,
+        email: user.email,
+        name: user.name,
       };
     }
     return null;
