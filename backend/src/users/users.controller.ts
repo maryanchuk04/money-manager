@@ -3,9 +3,7 @@ import {
   Controller,
   Get,
   Post,
-  UseGuards,
   Request,
-  Res,
   HttpCode,
   HttpStatus,
   HttpException,
@@ -78,6 +76,7 @@ export class UsersController {
         userId,
         userName,
       );
+
       return updateUser;
     } catch (error) {
       throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
@@ -91,14 +90,14 @@ export class UsersController {
     @Body('amount') amount: number,
     @Body('date') date: Date,
     @Body('type') type: TransactionType,
-    @Body('tag') tag: string,
+    @Body('description') description: string,
   ) {
     try {
       const message = await this.usersService.addTransaction(userId, {
         amount: +amount,
         date: date,
         type: type,
-        tag: tag,
+        description: description,
       });
       return message;
     } catch (error) {
@@ -106,7 +105,7 @@ export class UsersController {
     }
   }
 
-  @Delete('/:userId/transaction/:transcationId')
+  @Delete('/:userId/transaction/:transactionId')
   @HttpCode(HttpStatus.OK)
   async deleteTransaction(
     @Param('userId') userId: string,
@@ -123,37 +122,7 @@ export class UsersController {
     }
   }
   ////////////////////////////////////////////////////////////
-  @Post('/tag')
-  @HttpCode(HttpStatus.OK)
-  async addTag(
-    @Body('userId') userId: string,
-    @Body('tagName') tagName: string,
-    @Body('type') type: TransactionType,
-  ) {
-    try {
-      const message = await this.usersService.addTag(userId, {
-        tagName: tagName,
-        type: type,
-      });
-      return message;
-    } catch (error) {
-      throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
-    }
-  }
 
-  @Delete('/:userId/tag/:tagId')
-  @HttpCode(HttpStatus.OK)
-  async deleteTag(
-    @Param('userId') userId: string,
-    @Param('tagId') tagId: string,
-  ) {
-    try {
-      const message = await this.usersService.deleteTransaction(userId, tagId);
-      return message;
-    } catch (error) {
-      throw new HttpException('Щось пішло не так', HttpStatus.BAD_REQUEST);
-    }
-  }
   //Get / logout
   @Get('/logout')
   logout(@Request() req): any {

@@ -5,7 +5,7 @@ function InputWrapper({
 	placeholder = "",
 	onChange,
 	type = "text",
-	required = false,
+	max,
 }) {
 	return (
 		<div className='flex flex-col'>
@@ -21,7 +21,7 @@ function InputWrapper({
 				placeholder={placeholder}
 				onChange={onChange}
 				name={inputName}
-				required={required}
+				max={max && max}
 			/>
 		</div>
 	);

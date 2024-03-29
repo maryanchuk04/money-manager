@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './users.model';
-import { Transaction, Tag } from './users.model';
+import { Transaction } from './users.model';
 import mongoose from 'mongoose';
+
 class ConflictError extends Error {
   status: number;
 
@@ -59,10 +60,18 @@ export class UsersService {
 
   async updateUserName(userId: string, newName: string) {
     try {
-      await this.userModel.updateOne({ _id: userId }, { name: newName });
+      const updatedUser = await this.userModel.findOneAndUpdate(
+        { _id: userId },
+        { name: newName },
+        { new: true },
+      );
+
+      if (!updatedUser) {
+        throw new Error('User not found');
+      }
       return { message: 'User name updated successfully' };
     } catch (error) {
-      throw new Error('Error updating user name');
+      throw new Error('Error updating user name: ' + error.message);
     }
   }
 
@@ -79,16 +88,38 @@ export class UsersService {
         throw new Error('User not found');
       }
 
-      return { message: 'Transaction added successfully' };
+      return { ...newTransaction, id: transactionId };
     } catch (error) {
       throw new Error('Error adding transaction: ' + error.message);
     }
   }
 
+  // async deleteTransaction(userId: string, transactionId: string) {
+  //   try {
+  //     const user = await this.userModel.findById(userId);
+  //     if (!user) {
+  //       throw new Error('User not found');
+  //     }
+  //     console.log(user);
+  //     // Фільтруємо транзакції, залишаючи лише ті, які не мають заданого _id
+  //     user.transactions = user.transactions.filter((transaction) => {
+  //       console.log(transaction._id.toString(), transactionId);
+  //       console.log(typeof transaction._id, typeof transactionId);
+  //       return transaction._id.toString() !== transactionId;
+  //     });
+  //     console.log(user);
+  //     await user.save(); // Зберігаємо зміни
+
+  //     return { message: 'Transaction deleted successfully' };
+  //   } catch (error) {
+  //     throw new Error('Error deleting transaction: ' + error.message);
+  //   }
+  // }
+
   async deleteTransaction(userId: string, transactionId: string) {
     try {
-      const result = await this.userModel.findOneAndUpdate(
-        { _id: userId },
+      const result = await this.userModel.findByIdAndUpdate(
+        userId,
         { $pull: { transactions: { _id: transactionId } } },
         { new: true },
       );
@@ -100,43 +131,6 @@ export class UsersService {
       return { message: 'Transaction deleted successfully' };
     } catch (error) {
       throw new Error('Error deleting transaction: ' + error.message);
-    }
-  }
-
-  async addTag(userId: string, newTag: Tag) {
-    try {
-      const tagId = new mongoose.Types.ObjectId();
-      const result = await this.userModel.findOneAndUpdate(
-        { _id: userId },
-        { $push: { tags: { _id: tagId, ...newTag } } },
-        { new: true },
-      );
-
-      if (!result) {
-        throw new Error('User not found');
-      }
-
-      return { message: 'Tag added successfully' };
-    } catch (error) {
-      throw new Error('Error adding tag: ' + error.message);
-    }
-  }
-
-  async deleteTag(userId: string, tagId: string) {
-    try {
-      const result = await this.userModel.findOneAndUpdate(
-        { _id: userId },
-        { $pull: { tags: { _id: tagId } } },
-        { new: true },
-      );
-
-      if (!result) {
-        throw new Error('User not found');
-      }
-
-      return { message: 'Tag deleted successfully' };
-    } catch (error) {
-      throw new Error('Error deleting tag: ' + error.message);
     }
   }
 }

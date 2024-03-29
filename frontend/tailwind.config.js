@@ -16,7 +16,7 @@ export default {
 		screens: {
 			"3xl": { min: "1000px" },
 
-			md: { max: "767px" },
+			md: { max: "769px" },
 			// => @media (max-width: 767px) { ... }
 
 			sm: { max: "639px" },

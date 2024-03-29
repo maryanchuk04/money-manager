@@ -10,13 +10,7 @@ export interface Transaction {
   date: Date;
   amount: number;
   type: TransactionType;
-  tag: string;
-}
-
-export interface Tag {
-  _id?: string;
-  tagName: string;
-  type: TransactionType;
+  description: string;
 }
 
 export const UserSchema = new mongoose.Schema(
@@ -42,21 +36,7 @@ export const UserSchema = new mongoose.Schema(
         },
         date: { type: Date, required: true },
         amount: { type: Number, required: true },
-        type: {
-          type: String,
-          enum: Object.values(TransactionType),
-          required: true,
-        },
-        tag: { type: String, required: true },
-      },
-    ],
-    tags: [
-      {
-        _id: {
-          type: mongoose.Schema.Types.ObjectId,
-          default: mongoose.Types.ObjectId,
-        },
-        tagName: { type: String, required: true },
+        description: { type: String, required: true },
         type: {
           type: String,
           enum: Object.values(TransactionType),
@@ -74,5 +54,4 @@ export interface User extends mongoose.Document {
   password: string;
   name: string;
   transactions: Transaction[];
-  tags: Tag[];
 }

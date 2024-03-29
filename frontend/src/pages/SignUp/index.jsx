@@ -5,7 +5,6 @@ import Button from "../../components/Button";
 import { registrationValidationSchema } from "../../validations/registration.schema";
 import { apiClient } from "../../app/apiClient";
 import { useNavigate } from "react-router-dom";
-import { encrypt } from "../../utils/encryption";
 import { showSuccessNotif, showErrorNotif } from "../../utils/notify";
 import { Link } from "react-router-dom";
 
@@ -32,8 +31,7 @@ function SignUp() {
 			navigate("/");
 
 			const { data } = response;
-			const encryptedId = encrypt(data.id);
-			localStorage.setItem("userId", JSON.stringify({ id: encryptedId }));
+			localStorage.setItem("userId", JSON.stringify({ id: data.id }));
 		} catch (error) {
 			// Handle error
 			const { data } = error.response;
@@ -45,15 +43,15 @@ function SignUp() {
 	};
 
 	return (
-		<div className='h-[100vh] w-full flex bg-background'>
+		<div className='h-[100vh] md:h-dvh w-full flex bg-background'>
 			<Formik
 				initialValues={initialValues}
 				validationSchema={registrationValidationSchema}
 				onSubmit={signIn}>
 				{(formik) => (
-					<Form className='w-5/12 h-4/6 m-auto p-2 flex flex-col bg-backgroundForm rounded-xl'>
+					<Form className='w-5/12 md:w-10/12 sm:h-[80%] md:h-2/6 h-4/6 m-auto p-2 flex flex-col bg-backgroundForm rounded-xl'>
 						<div className='w-10/12 m-auto flex flex-col h-[90%] justify-between'>
-							<h2 className='text-3xl text-center text-textColor'>
+							<h2 className='text-3xl md:text-2xl text-center text-textColor'>
 								Ласкаво просимо
 							</h2>
 							<div>
