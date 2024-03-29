@@ -14,16 +14,15 @@ async function bootstrap() {
     //   'https://money-manager-ivory.vercel.app',
     // ],
   });
-  app.use(
-    session({
-      secret: 'keyboard',
-      resave: false,
-      saveUninitialized: false,
-    }),
-  );
+//   app.use(
+//     session({
+//       secret: 'keyboard',
+//       saveUninitialized: false,
+//     }),
+//   );
 
-  passport.initialize();
-  app.use(passport.session());
+//   passport.initialize();
+//   app.use(passport.session());
 
   await app.listen(3000);
 }
